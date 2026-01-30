@@ -1,18 +1,22 @@
 import express from 'express';
-import cors from 'cors';
 import dotenv from 'dotenv';
-// ⚠️ লক্ষ্য করুন: শেষে .js অবশ্যই দিতে হবে
 import tiktokRoutes from './src/routes/tiktok.routes.js'; 
 
 dotenv.config();
-
 const app = express();
 
-app.use(cors({
-    origin: "*", 
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type"]
-}));
+// ✅ ম্যানুয়াল CORS সেটআপ (সবচেয়ে শক্তিশালী পদ্ধতি)
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*"); // সব ডোমেইন অ্যালাউ
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    
+    // প্রি-ফ্লাইট (OPTIONS) রিকোয়েস্ট হ্যান্ডেল করা
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+    next();
+});
 
 app.use(express.json());
 
@@ -20,16 +24,8 @@ app.use(express.json());
 app.use('/api/tiktok', tiktokRoutes);
 
 app.get('/', (req, res) => {
-    res.send('TikTok Downloader API is Running (ES Module)...');
+    res.send('TikTok Downloader API is Running...');
 });
 
-const PORT = process.env.PORT || 5000;
-
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, () => {
-        console.log(`Server running on http://localhost:${PORT}`);
-    });
-}
-
-// Vercel এর জন্য এক্সপোর্ট
+// Vercel এক্সপোর্ট
 export default app;
