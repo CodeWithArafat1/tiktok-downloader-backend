@@ -9,8 +9,12 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: "*",
-    methods: ["GET", "POST"]
+     origin: [
+      "http://localhost:5173",
+      "https://tiktok-downloader-eta-three.vercel.app",
+    ], 
+    methods: ["GET", "POST"],
+    credentials: true
 }));
 
 app.use(express.json());
