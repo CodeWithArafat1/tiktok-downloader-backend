@@ -9,12 +9,9 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-     origin: [
-      "http://localhost:5173",
-      "https://tiktok-downloader-eta-three.vercel.app",
-    ], 
-    methods: ["GET", "POST"],
-    credentials: true
+    origin: "*", 
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"]
 }));
 
 app.use(express.json());
@@ -28,7 +25,6 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-// Vercel এ এই শর্তটি জরুরি, না হলে সার্ভার ক্র্যাশ করতে পারে
 if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, () => {
         console.log(`Server running on http://localhost:${PORT}`);
