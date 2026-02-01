@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import tiktokRoutes from './src/routes/tiktok.routes.js'; 
-
+import instagramRoutes from './src/routes/instagram.routes.js';
 dotenv.config();
 
 const app = express();
@@ -21,6 +21,7 @@ app.use(express.json());
 
 // ✅ Routes
 app.use('/api/tiktok', tiktokRoutes);
+app.use('/api/instagram', instagramRoutes);
 
 // ✅ Root Route (Testing)
 app.get('/', (req, res) => {
